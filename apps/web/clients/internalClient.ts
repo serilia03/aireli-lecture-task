@@ -2,10 +2,19 @@ import { PlatformAccessToken, PlatformUserCreateInput, PlatformUser } from '@ent
 import axios from 'axios';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { createUser } from "api/src/models/User"
 
 const registerUser = async (input: PlatformUserCreateInput): Promise<Pick<PlatformUser, "id"> | undefined | null> => {
+  try {
+    const { data } = await axios.post('http://localhost:3001/register', input);
+    const newUser = await createUser(data);
+    return newUser;
+  } catch (error) {
+    console.error(error);
+    // Handle error
+    return null;
+  }
   // ToDo: Implement the registerUser function
-  return null
 };
 
 const loginUser = async (input: PlatformUserCreateInput) => {
